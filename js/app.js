@@ -16,13 +16,16 @@ cards = shuffle(cards);
 
 const deck = document.querySelector('.deck');
 const fragment = document.createDocumentFragment();
+let counter = 0;
 
 for (card of cards) {
 	let item = document.createElement('li');
 	let icon = document.createElement('i');
 	item.appendChild(icon);
 	item.className = 'card ' + card;
+	item.id = counter;
 	fragment.appendChild(item);
+	counter++;
 }
 
 deck.appendChild(fragment);
@@ -38,6 +41,62 @@ deck.appendChild(fragment);
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+let openCards = [];
+
+deck.addEventListener('click', function(e) {
+	if (e.target.nodeName === 'LI' && !e.target.classList.contains('show')) {
+		// Show card
+		displayCard();
+		// Add card to 'open cards' list
+		addOpenCard(e.target.id);
+	}
+
+	if (openCards.length == 2) {
+		checkMatch();
+
+
+	}
+
+
+});
+
+
+
+function displayCard() {
+	event.target.classList.add('show');
+	event.target.classList.add('open');
+}
+
+function addOpenCard(cardId) {
+	openCards.push(cardId);
+}
+
+function checkMatch() {
+	let firstCard = document.getElementById(String(openCards[0]));
+	let secondCard = document.getElementById(String(openCards[1]));
+	
+	if (firstCard.className === secondCard.className) {
+		firstCard.classList.add('match');
+		secondCard.classList.add('match');
+		openCards = [];
+	} else {
+		firstCard.classList.remove('open');
+		firstCard.classList.remove('show');
+		secondCard.classList.remove('open');
+		secondCard.classList.remove('show');
+		openCards = [];
+	}
+
+
+}
+
+function hideCards() {
+	event.target.classList.remove('show');
+	event.target.classList.remove('open');	
+}
+
+
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
