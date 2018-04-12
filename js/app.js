@@ -13,7 +13,19 @@ let cards = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt
  */
 
 cards = shuffle(cards);
-console.log(cards);
+
+const deck = document.querySelector('.deck');
+const fragment = document.createDocumentFragment();
+
+for (card of cards) {
+	let item = document.createElement('li');
+	let icon = document.createElement('i');
+	item.appendChild(icon);
+	item.className = 'card ' + card;
+	fragment.appendChild(item);
+}
+
+deck.appendChild(fragment);
 
 
 /*
