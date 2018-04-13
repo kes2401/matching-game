@@ -4,6 +4,8 @@
 let cards = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-anchor",
 			 "fa fa-leaf", "fa fa-bicycle", "fa fa-diamond", "fa fa-bomb", "fa fa-leaf", "fa fa-bomb",
 			 "fa fa-bolt", "fa fa-bicycle", "fa fa-paper-plane-o", "fa fa-cube"];
+let moves = 0;
+let play = true;
 
 /*
  * Display the cards on the page
@@ -16,16 +18,16 @@ cards = shuffle(cards);
 
 const deck = document.querySelector('.deck');
 const fragment = document.createDocumentFragment();
-let counter = 0;
+let idCounter = 0;
 
 for (card of cards) {
 	let item = document.createElement('li');
 	let icon = document.createElement('i');
 	item.appendChild(icon);
 	item.className = 'card ' + card;
-	item.id = counter;
+	item.id = idCounter;
 	fragment.appendChild(item);
-	counter++;
+	idCounter++;
 }
 
 deck.appendChild(fragment);
@@ -50,22 +52,26 @@ deck.addEventListener('click', function(e) {
 		displayCard();
 		// Add card to 'open cards' list
 		addOpenCard(e.target.id);
+
 	}
 
 	if (openCards.length == 2) {
 		checkMatch();
-
-
+		incrementMoves();
 	}
 
 
 });
 
 
+const backdrop = document.querySelector('.backdrop');
+const closeBtn = document.querySelector('.close-btn');
+backdrop.addEventListener('click', hideModal);
+closeBtn.addEventListener('click', hideModal);
+
 
 function displayCard() {
-	event.target.classList.add('show');
-	event.target.classList.add('open');
+	event.target.classList.add('show', 'open');
 }
 
 function addOpenCard(cardId) {
@@ -73,27 +79,51 @@ function addOpenCard(cardId) {
 }
 
 function checkMatch() {
-	let firstCard = document.getElementById(String(openCards[0]));
-	let secondCard = document.getElementById(String(openCards[1]));
+	const firstCard = document.getElementById(String(openCards[0]));
+	const secondCard = document.getElementById(String(openCards[1]));
 	
 	if (firstCard.className === secondCard.className) {
-		firstCard.classList.add('match');
-		secondCard.classList.add('match');
-		openCards = [];
+		setTimeout(function() {
+			firstCard.classList.add('match');
+			secondCard.classList.add('match');
+			openCards = [];
+			checkDeck();			
+		}, 500);
 	} else {
-		firstCard.classList.remove('open');
-		firstCard.classList.remove('show');
-		secondCard.classList.remove('open');
-		secondCard.classList.remove('show');
-		openCards = [];
+		setTimeout(function() {
+			firstCard.classList.remove('open', 'show');
+			secondCard.classList.remove('open', 'show');
+			openCards = [];
+		}, 1000);
 	}
-
-
 }
 
-function hideCards() {
-	event.target.classList.remove('show');
-	event.target.classList.remove('open');	
+function incrementMoves() {
+	moves++;
+	document.querySelector('.moves').textContent = moves;
+}
+
+function checkDeck() {
+	// Check if all cards contain the class 'match', if so then game is won
+	const fullDeck = document.querySelectorAll('.card');
+	const win = Array.prototype.every.call(fullDeck, function(item){
+		return item.classList.contains('match');
+	});
+
+	if(win) {
+		showModal();
+	}
+}
+
+function showModal() {
+	document.querySelector('.backdrop').style.display = 'block';
+	document.querySelector('.modal').style.display = 'block';
+	document.querySelector('.total').textContent = moves;
+}
+
+function hideModal() {
+	document.querySelector('.backdrop').style.display = 'none';
+	document.querySelector('.modal').style.display = 'none';
 }
 
 
