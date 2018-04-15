@@ -42,10 +42,9 @@ function init() {
     		deck.removeChild(deck.firstChild);
 		}
 	}
-
-	const fragment = document.createDocumentFragment(); // create a new offscreen Document Fragment to add new shuffled cards
+	// create a new offscreen Document Fragment to add new shuffled cards
+	const fragment = document.createDocumentFragment();
 	let idCounter = 0;
-
 	for (card of cards) {
 		let item = document.createElement('li');
 		let icon = document.createElement('i');
@@ -90,14 +89,17 @@ backdrop.addEventListener('click', hideModal);
 closeBtn.addEventListener('click', hideModal);
 restart.addEventListener('click', init);
 
+// function to display card when it is clicked
 function displayCard() {
 	event.target.classList.add('show', 'open');
 }
 
+// function to add clicked card to open cards list
 function addOpenCard(cardId) {
 	openCards.push(cardId);
 }
 
+// function called to check if both open cards match
 function checkMatch() {
 	const firstCard = document.getElementById(String(openCards[0]));
 	const secondCard = document.getElementById(String(openCards[1]));
@@ -118,6 +120,7 @@ function checkMatch() {
 	}
 }
 
+// function called to increment the moves counter, update the DOM and reduce star rating depending on total moves taken
 function incrementMoves() {
 	moves++;
 	document.querySelector('.moves').textContent = moves;
@@ -128,6 +131,7 @@ function incrementMoves() {
 	}
 }
 
+// function called to check if the game is won by matching all cards
 function checkForWin() {
 	// Check if all cards contain the class 'match', if so then game is won
 	const fullDeck = document.querySelectorAll('.card');
@@ -140,12 +144,14 @@ function checkForWin() {
 	}
 }
 
+// function called to show win modal once game is won
 function showModal() {
 	document.querySelector('.backdrop').style.display = 'block';
 	document.querySelector('.modal').style.display = 'block';
 	document.querySelector('.total').textContent = moves;
 }
 
+// function called to remove win modal
 function hideModal() {
 	document.querySelector('.backdrop').style.display = 'none';
 	document.querySelector('.modal').style.display = 'none';
