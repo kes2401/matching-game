@@ -108,12 +108,17 @@ h1 {
     cursor: pointer;
 }
 
+.timer {
+    display: inline-block;
+    margin-left: 20px;
+}
+
 /* 
  * Styles for win modal
  */
 
 .backdrop {
-    display: none;
+    /*display: none;*/
     height: 100vh;
     width: 100vw;
     background: rgba(0, 0, 0, 0.6);
@@ -122,12 +127,12 @@ h1 {
 }
 
 .modal {
-    display: none;
+    /*display: none;*/
     height: 240px;
-    width: 240px;
+    width: 280px;
     position: fixed;
     z-index: 2;
-    left: calc((100vw/2) - 120px);
+    left: calc((100vw/2) - 140px);
     top: calc((100vh/2) - 120px);
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
     padding: 20px;
@@ -152,5 +157,5 @@ h1 {
 }
 
 .total {
-    font-size: 2rem;
+    font-size: 1.25rem;
 }

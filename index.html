@@ -11,9 +11,11 @@
 <body>
     <div class="backdrop"></div>
     <div class="modal">
-        <p>You Finished In</p>
-        <p><span class="total">0</span></p>
-        <p>Moves</p>
+        <p>You Finished In <span class="total">0</span> Moves</p>
+        <p class="time-taken">
+            <!-- After <span class="minstaken">0</span> minutes <span class="secstaken">0</span> seconds -->
+        </p>
+        <p>With a Star Rating of: </p>
         <div class="close-btn">Close</div>
     </div>
 
@@ -30,6 +32,8 @@
         	</ul>
 
         	<span class="moves">0</span> Moves
+
+            <div class="timer">Timer: <span class="mins">0</span>:<span class="secs">00</span></div>
 
             <div class="restart">
         		<i class="fa fa-repeat"></i>

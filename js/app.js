@@ -6,11 +6,16 @@ let cards = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt
 			 "fa fa-bolt", "fa fa-bicycle", "fa fa-paper-plane-o", "fa fa-cube"]; // all cards available in the game
 let moves; // Counts the number of moves the user has made
 let openCards; // Holds the current open cards
+let totalSeconds; // Holds the number of seconds that has elapsed in current game
+let gameWon = false; // holds status of whether game is won or not
+let intervalId;
 
 const deck = document.querySelector('.deck');
 const backdrop = document.querySelector('.backdrop');
 const closeBtn = document.querySelector('.close-btn');
 const restart = document.querySelector('.restart');
+let mins = document.querySelector('.mins');
+let secs = document.querySelector('.secs');
 
 /*
  * Display the cards on the page
@@ -21,12 +26,16 @@ const restart = document.querySelector('.restart');
 
 function init() {
 
+	if (intervalId) {
+		clearInterval(intervalId);
+	}
 	moves = 0;
 	openCards = [];
+	gameWon = false;
 
 	document.querySelector('.moves').textContent = moves; // reset moves to zero onscreen
 	
-	// remove any styles used to hide stars	in score panel
+	// remove any styles used to hide stars	in score panel, if any
 	const stars = document.getElementsByClassName('fa-star');
 	for (star of stars) {
 		if (star.style) {
@@ -56,6 +65,10 @@ function init() {
 	}
 
 	deck.appendChild(fragment); // add Document Fragment to the DOM
+
+	totalSeconds = 0;
+	resetTimer();
+	intervalId = setInterval(timer, 1000);
 }
 
 init(); // initialise the game
@@ -110,13 +123,13 @@ function checkMatch() {
 			secondCard.classList.add('match');
 			openCards = [];
 			checkForWin();			
-		}, 500);
+		}, 250);
 	} else {
 		setTimeout(function() {
 			firstCard.classList.remove('open', 'show');
 			secondCard.classList.remove('open', 'show');
 			openCards = [];
-		}, 1000);
+		}, 750);
 	}
 }
 
@@ -140,6 +153,8 @@ function checkForWin() {
 	});
 
 	if (win) {
+		gameWon = true;
+		clearInterval(intervalId);
 		showModal();
 	}
 }
@@ -149,12 +164,48 @@ function showModal() {
 	document.querySelector('.backdrop').style.display = 'block';
 	document.querySelector('.modal').style.display = 'block';
 	document.querySelector('.total').textContent = moves;
+	document.querySelector('.time-taken').textContent = totalTimeString();
+	// document.querySelector('.minstaken').textContent = mins.textContent;
+	// document.querySelector('.secstaken').textContent = secs.textContent;
 }
 
 // function called to remove win modal
 function hideModal() {
 	document.querySelector('.backdrop').style.display = 'none';
 	document.querySelector('.modal').style.display = 'none';
+}
+
+// function containing timer functionality
+function timer() {
+	totalSeconds += 1;
+	mins.textContent = Math.floor(totalSeconds / 60);
+	secs.textContent = zeroFill(totalSeconds % 60);
+}
+
+function resetTimer() {
+	totalSeconds = 0;
+	mins.textContent = 0;
+	secs.textContent = zeroFill(0);
+}
+
+// zero-fill function for use with timer
+function zeroFill(i) {
+	return (i < 10 ? '0' : '') + i;
+}
+
+function totalTimeString() {
+	let timeStr = 'After ';
+	if (Math.floor(totalSeconds / 60) === 1) {
+		timeStr += '1 minute and ';
+	} else if (Math.floor(totalSeconds / 60) > 1) {
+		timeStr += Math.floor(totalSeconds / 60) + ' minutes and ';
+	}
+	if (totalSeconds % 60 === 1){
+		timeStr += (totalSeconds % 60) + ' second';
+	} else {
+		timeStr += (totalSeconds % 60) + ' seconds';
+	}
+	return timeStr;
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
