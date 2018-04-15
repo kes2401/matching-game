@@ -3,9 +3,14 @@
  */
 let cards = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-anchor",
 			 "fa fa-leaf", "fa fa-bicycle", "fa fa-diamond", "fa fa-bomb", "fa fa-leaf", "fa fa-bomb",
-			 "fa fa-bolt", "fa fa-bicycle", "fa fa-paper-plane-o", "fa fa-cube"];
-let moves = 0;
-let play = true;
+			 "fa fa-bolt", "fa fa-bicycle", "fa fa-paper-plane-o", "fa fa-cube"]; // all cards available in the game
+let moves; // Counts the number of moves the user has made
+let openCards; // Holds the current open cards
+
+const deck = document.querySelector('.deck');
+const backdrop = document.querySelector('.backdrop');
+const closeBtn = document.querySelector('.close-btn');
+const restart = document.querySelector('.restart');
 
 /*
  * Display the cards on the page
@@ -14,24 +19,47 @@ let play = true;
  *   - add each card's HTML to the page
  */
 
-cards = shuffle(cards);
+function init() {
 
-const deck = document.querySelector('.deck');
-const fragment = document.createDocumentFragment();
-let idCounter = 0;
+	moves = 0;
+	openCards = [];
 
-for (card of cards) {
-	let item = document.createElement('li');
-	let icon = document.createElement('i');
-	item.appendChild(icon);
-	item.className = 'card ' + card;
-	item.id = idCounter;
-	fragment.appendChild(item);
-	idCounter++;
+	document.querySelector('.moves').textContent = moves; // reset moves to zero onscreen
+	
+	// remove any styles used to hide stars	in score panel
+	const stars = document.getElementsByClassName('fa-star');
+	for (star of stars) {
+		if (star.style) {
+			star.removeAttribute("style");
+		}
+	}
+
+	cards = shuffle(cards); // shuffles the deck of cars
+
+	// check if deck contains any child elements and if so remove them all
+	if (deck.firstChild) {
+		while (deck.firstChild) {
+    		deck.removeChild(deck.firstChild);
+		}
+	}
+
+	const fragment = document.createDocumentFragment(); // create a new offscreen Document Fragment to add new shuffled cards
+	let idCounter = 0;
+
+	for (card of cards) {
+		let item = document.createElement('li');
+		let icon = document.createElement('i');
+		item.appendChild(icon);
+		item.className = 'card ' + card;
+		item.id = idCounter;
+		fragment.appendChild(item);
+		idCounter++;
+	}
+
+	deck.appendChild(fragment); // add Document Fragment to the DOM
 }
 
-deck.appendChild(fragment);
-
+init(); // initialise the game
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -44,31 +72,23 @@ deck.appendChild(fragment);
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-let openCards = [];
-
 deck.addEventListener('click', function(e) {
 	if (e.target.nodeName === 'LI' && !e.target.classList.contains('show')) {
 		// Show card
 		displayCard();
 		// Add card to 'open cards' list
 		addOpenCard(e.target.id);
-
 	}
 
 	if (openCards.length == 2) {
-		checkMatch();
 		incrementMoves();
+		checkMatch();
 	}
-
-
 });
 
-
-const backdrop = document.querySelector('.backdrop');
-const closeBtn = document.querySelector('.close-btn');
 backdrop.addEventListener('click', hideModal);
 closeBtn.addEventListener('click', hideModal);
-
+restart.addEventListener('click', init);
 
 function displayCard() {
 	event.target.classList.add('show', 'open');
@@ -87,7 +107,7 @@ function checkMatch() {
 			firstCard.classList.add('match');
 			secondCard.classList.add('match');
 			openCards = [];
-			checkDeck();			
+			checkForWin();			
 		}, 500);
 	} else {
 		setTimeout(function() {
@@ -101,16 +121,21 @@ function checkMatch() {
 function incrementMoves() {
 	moves++;
 	document.querySelector('.moves').textContent = moves;
+	if (moves === 10) {
+		document.querySelector('.star-3').style.display = 'none';
+	} else if (moves === 20) {
+		document.querySelector('.star-2').style.display = 'none';
+	}
 }
 
-function checkDeck() {
+function checkForWin() {
 	// Check if all cards contain the class 'match', if so then game is won
 	const fullDeck = document.querySelectorAll('.card');
 	const win = Array.prototype.every.call(fullDeck, function(item){
 		return item.classList.contains('match');
 	});
 
-	if(win) {
+	if (win) {
 		showModal();
 	}
 }
@@ -125,8 +150,6 @@ function hideModal() {
 	document.querySelector('.backdrop').style.display = 'none';
 	document.querySelector('.modal').style.display = 'none';
 }
-
-
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {

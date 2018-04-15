@@ -108,7 +108,9 @@ h1 {
     cursor: pointer;
 }
 
-/* Styles for win modal */
+/* 
+ * Styles for win modal
+ */
 
 .backdrop {
     display: none;
@@ -146,6 +148,7 @@ h1 {
     border: 2px solid #fff;
     padding: 5px;
     margin: 0 auto;
+    cursor: pointer;
 }
 
 .total {
