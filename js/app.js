@@ -165,8 +165,7 @@ function showModal() {
 	document.querySelector('.modal').style.display = 'block';
 	document.querySelector('.total').textContent = moves;
 	document.querySelector('.time-taken').textContent = totalTimeString();
-	// document.querySelector('.minstaken').textContent = mins.textContent;
-	// document.querySelector('.secstaken').textContent = secs.textContent;
+	document.querySelector('.star-rating').innerHTML = checkStarRating();
 }
 
 // function called to remove win modal
@@ -206,6 +205,16 @@ function totalTimeString() {
 		timeStr += (totalSeconds % 60) + ' seconds';
 	}
 	return timeStr;
+}
+
+function checkStarRating() {
+	if (moves < 10) {
+		return '<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>';
+	} else if (moves < 20) {
+		return '<i class="fa fa-star"></i> <i class="fa fa-star"></i>';
+	} else {
+		return '<i class="fa fa-star"></i>';
+	}
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976

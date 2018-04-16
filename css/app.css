@@ -118,7 +118,7 @@ h1 {
  */
 
 .backdrop {
-    /*display: none;*/
+    display: none;
     height: 100vh;
     width: 100vw;
     background: rgba(0, 0, 0, 0.6);
@@ -127,7 +127,7 @@ h1 {
 }
 
 .modal {
-    /*display: none;*/
+    display: none;
     height: 240px;
     width: 280px;
     position: fixed;
