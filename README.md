@@ -13,3 +13,4 @@ Also known as 'Concentration', this matching game will test your memory.
 ## Dependencies
 
 - Font Awesome 4.6.1
+- Animate.css 3.5.2
