@@ -85,7 +85,7 @@ init(); // initialise the game
  */
 
 deck.addEventListener('click', function(e) {
-	if (e.target.nodeName === 'LI' && !e.target.classList.contains('show')) {
+	if (e.target.nodeName === 'LI' && !e.target.classList.contains('show') && openCards.length < 2) {
 		// Show card
 		displayCard();
 		// Add card to 'open cards' list
