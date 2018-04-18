@@ -116,11 +116,11 @@ function addOpenCard(cardId) {
 function checkMatch() {
 	const firstCard = document.getElementById(String(openCards[0]));
 	const secondCard = document.getElementById(String(openCards[1]));
-	
+
 	if (firstCard.className === secondCard.className) {
 		setTimeout(function() {
-			firstCard.classList.add('match');
-			secondCard.classList.add('match');
+			firstCard.classList.add('match', 'animated', 'flash');
+			secondCard.classList.add('match', 'animated', 'flash');
 			openCards = [];
 			checkForWin();			
 		}, 250);
@@ -192,6 +192,7 @@ function zeroFill(i) {
 	return (i < 10 ? '0' : '') + i;
 }
 
+// function to build string of time taken to win the game to be used in the win modal
 function totalTimeString() {
 	let timeStr = 'After ';
 	if (Math.floor(totalSeconds / 60) === 1) {
@@ -207,6 +208,7 @@ function totalTimeString() {
 	return timeStr;
 }
 
+// function to check star rating and build a series of stars for display in the win modal
 function checkStarRating() {
 	if (moves < 10) {
 		return '<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>';
