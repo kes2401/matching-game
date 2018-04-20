@@ -9,6 +9,7 @@ let openCards; // Holds the current open cards
 let totalSeconds; // Holds the number of seconds that has elapsed in current game
 let gameWon = false; // holds status of whether game is won or not
 let intervalId;
+let firstCard; // hold status of whether game is awaiting first card to be clicked to start the timer
 
 
 const deck = document.querySelector('.deck');
@@ -34,6 +35,7 @@ function init() {
 	moves = 0;
 	openCards = [];
 	gameWon = false;
+	firstCard = true;
 
 	document.querySelector('.moves').textContent = moves; // reset moves to zero onscreen
 	
@@ -70,7 +72,6 @@ function init() {
 
 	totalSeconds = 0;
 	resetTimer();
-	intervalId = setInterval(timer, 1000);
 }
 
 init(); // initialise the game
@@ -87,6 +88,12 @@ init(); // initialise the game
  */
 
 deck.addEventListener('click', function(e) {
+
+	if (firstCard) {
+		firstCard = false;
+		intervalId = setInterval(timer, 1000);	
+	}
+
 	if (e.target.nodeName === 'LI' && !e.target.classList.contains('show') && openCards.length < 2) {
 		// Show card
 		displayCard();
