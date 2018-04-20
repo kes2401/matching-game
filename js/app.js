@@ -10,6 +10,8 @@ let totalSeconds; // Holds the number of seconds that has elapsed in current gam
 let gameWon = false; // holds status of whether game is won or not
 let intervalId;
 let firstCard; // hold status of whether game is awaiting first card to be clicked to start the timer
+const twoStar = 12; // holds number of turns allowed before Star Rating decreases to 2 stars
+const oneStar = 24; // holds number of turns allowed before Star Rating decreases to 1 star
 
 
 const deck = document.querySelector('.deck');
@@ -150,9 +152,9 @@ function checkMatch() {
 function incrementMoves() {
 	moves++;
 	document.querySelector('.moves').textContent = moves;
-	if (moves === 10) {
+	if (moves === twoStar) {
 		document.querySelector('.star-3').style.display = 'none';
-	} else if (moves === 20) {
+	} else if (moves === oneStar) {
 		document.querySelector('.star-2').style.display = 'none';
 	}
 }
@@ -223,9 +225,9 @@ function totalTimeString() {
 
 // function to check star rating and build a series of stars for display in the win modal
 function checkStarRating() {
-	if (moves < 10) {
+	if (moves < twoStar) {
 		return ' <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>';
-	} else if (moves < 20) {
+	} else if (moves < oneStar) {
 		return ' <i class="fa fa-star"></i> <i class="fa fa-star"></i>';
 	} else {
 		return ' <i class="fa fa-star"></i>';
