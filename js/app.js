@@ -10,10 +10,12 @@ let totalSeconds; // Holds the number of seconds that has elapsed in current gam
 let gameWon = false; // holds status of whether game is won or not
 let intervalId;
 
+
 const deck = document.querySelector('.deck');
 const backdrop = document.querySelector('.backdrop');
 const closeBtn = document.querySelector('.close-btn');
 const restart = document.querySelector('.restart');
+const replay = document.querySelector('.replay-btn');
 let mins = document.querySelector('.mins');
 let secs = document.querySelector('.secs');
 
@@ -101,6 +103,10 @@ deck.addEventListener('click', function(e) {
 backdrop.addEventListener('click', hideModal);
 closeBtn.addEventListener('click', hideModal);
 restart.addEventListener('click', init);
+replay.addEventListener('click', function() {
+	hideModal();
+	init();
+});
 
 // function to display card when it is clicked
 function displayCard() {
@@ -211,11 +217,11 @@ function totalTimeString() {
 // function to check star rating and build a series of stars for display in the win modal
 function checkStarRating() {
 	if (moves < 10) {
-		return '<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>';
+		return ' <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>';
 	} else if (moves < 20) {
-		return '<i class="fa fa-star"></i> <i class="fa fa-star"></i>';
+		return ' <i class="fa fa-star"></i> <i class="fa fa-star"></i>';
 	} else {
-		return '<i class="fa fa-star"></i>';
+		return ' <i class="fa fa-star"></i>';
 	}
 }
 
